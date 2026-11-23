@@ -16,10 +16,8 @@ public class TeacherInformation : MonoBehaviour
     [SerializeField] ScrollRect scroll;
     const string BaseUrl = "https://www.htl-salzburg.ac.at";
     HttpClient client;
-    readonly Dictionary<string, string> cache = new Dictionary<string, string>();
     readonly List<Collider2D> rooms = new List<Collider2D>();
     string currentRoom = "";
-    string listHtml;
     int requestVersion;
 
     void Awake()
@@ -66,10 +64,12 @@ public class TeacherInformation : MonoBehaviour
         roomTitle.text = "Raum " + room;
         status.text = "Lehrkräfte & Sprechstunden";
         SetText("Lehrkräfte werden geladen …");
-        if (cache.TryGetValue(room, out string cached)) { SetText(cached); return; }
         try
         {
-            if (listHtml == null) listHtml = await client.GetStringAsync(BaseUrl + "/lehrerinnen.html");
+            string listUrl = BaseUrl + "/lehrerinnen.html";
+            Debug.Log($"[Lehrerdaten] Request-Start | Raum={room} | Typ=Übersicht | URL={listUrl}", this);
+            string listHtml = await client.GetStringAsync(listUrl);
+            if (!this || version != requestVersion) return;
             var links = TeacherParser.ParseTeacherLinks(listHtml, room);
             var teachers = new List<TeacherData>();
             int failed = 0;
@@ -80,6 +80,7 @@ public class TeacherInformation : MonoBehaviour
                 {
                     var uri = new Uri(new Uri(BaseUrl), link);
                     if (uri.Scheme != "https" || uri.Host != "www.htl-salzburg.ac.at") continue;
+                    Debug.Log($"[Lehrerdaten] Request-Start | Raum={room} | Typ=Lehrerdetails | URL={uri}", this);
                     var teacher = TeacherParser.ParseTeacherDetails(await client.GetStringAsync(uri));
                     if (NormalizeRoom(teacher.roomNumber) == room) teachers.Add(teacher);
                 }
@@ -98,7 +99,6 @@ public class TeacherInformation : MonoBehaviour
             else if (failed > 0) result.Append("<size=18>Einige Einträge konnten nicht geladen werden. Bitte später erneut versuchen.</size>");
             if (!this || version != requestVersion) return;
             string body = result.ToString();
-            if (failed == 0) cache[room] = body;
             status.text = teachers.Count + " Lehrkräfte · Sprechstunden laut Schulwebsite";
             SetText(body);
         }
