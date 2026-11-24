@@ -67,9 +67,11 @@ public class TeacherInformation : MonoBehaviour
         try
         {
             string listUrl = BaseUrl + "/lehrerinnen.html";
-            Debug.Log($"[Lehrerdaten] Request-Start | Raum={room} | Typ=Übersicht | URL={listUrl}", this);
+            Debug.Log($"[Test6] [Lehrerdaten] Request-Start | Raum={room} | Typ=Übersicht | URL={listUrl}", this);
             string listHtml = await client.GetStringAsync(listUrl);
+            Debug.Log($"[Test 4] Geladene URL: {listUrl} | Antwortlänge: {listHtml.Length}"); // <-- Hier einfach diese Zeile dazuschreiben
             if (!this || version != requestVersion) return;
+
             var links = TeacherParser.ParseTeacherLinks(listHtml, room);
             var teachers = new List<TeacherData>();
             int failed = 0;
@@ -81,7 +83,10 @@ public class TeacherInformation : MonoBehaviour
                     var uri = new Uri(new Uri(BaseUrl), link);
                     if (uri.Scheme != "https" || uri.Host != "www.htl-salzburg.ac.at") continue;
                     Debug.Log($"[Lehrerdaten] Request-Start | Raum={room} | Typ=Lehrerdetails | URL={uri}", this);
-                    var teacher = TeacherParser.ParseTeacherDetails(await client.GetStringAsync(uri));
+                    string detailHtml = await client.GetStringAsync(uri);
+                    Debug.Log($"[Test 3] Geladene URL: {uri} | Antwortlänge: {detailHtml.Length}");
+                    var teacher = TeacherParser.ParseTeacherDetails(detailHtml);
+
                     if (NormalizeRoom(teacher.roomNumber) == room) teachers.Add(teacher);
                 }
                 catch (Exception ex) { ++failed; Debug.LogWarning(ex.ToString()); }
@@ -105,6 +110,7 @@ public class TeacherInformation : MonoBehaviour
         catch (Exception ex)
         {
             Debug.LogWarning(ex.ToString());
+            Debug.Log("[Test7] was passiert wenn die Übersicht nicht erreichbar ist");
             if (this && version == requestVersion)
             {
                 status.text = "Verbindung zur Schulwebsite fehlgeschlagen";
