@@ -8,7 +8,25 @@
     - Tag und Uhrzeit stimmen überein.
 - Ergebnis:
     - In unserer Anzeige und auf der Website steht Montag, 09:45–10:35 Uhr. Passt.
+## Issue 3: Wird die passende Detailseite geladen?
+- Tester: Alichan Schajchiev
+- Durchführung:
+  - Eine Lehrkraft in einem vorhandenen Raum gewählt. URL und Antwortlänge nach dem erfolgreichen `GetStringAsync` in der Console geloggt und in einer frischen Sitzung geprüft.
+- Erwartet:
+  - Die erwartete URL erscheint mit einer Antwortlänge größer als null.
+- Ergebnis:
+  - In der Console wird die Detail-URL mit einer Antwortlänge größer als 0 ausgegeben. Passt.
+  !Konsolenausgabe von Issue 3: (.img/protokoll_detailseite.png)
 
+## Issue 4: Wird die Lehrkräfteübersicht geladen?
+- Tester: Alichan Schajchiev
+- Durchführung:
+  - URL und Antwortlänge nach dem erfolgreichen `GetStringAsync` geloggt und in einer frischen Sitzung beim Betreten des Türbereichs für `lehrerinnen.html` geprüft.
+- Erwartet:
+  - Die erwartete URL erscheint mit einer Antwortlänge größer als null.
+- Ergebnis:
+  - In der Console wird `lehrerinnen.html` mit einer Antwortlänge größer als 0 ausgegeben. Passt.
+!Konsolenausgabe von Issue 4: (.img/protokoll_Lehrerübersicht.png)
 ## Issue 6: Was passiert mit den Requests beim erneuten Besuch?
 - Tester: 
 - Durchführung:
