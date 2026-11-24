@@ -16,7 +16,7 @@
   - Die erwartete URL erscheint mit einer Antwortlänge größer als null.
 - Ergebnis:
   - In der Console wird die Detail-URL mit einer Antwortlänge größer als 0 ausgegeben. Passt.
-  !Konsolenausgabe von Issue 3: (.img/protokoll_detailseite.png)
+  [Konsolenausgabe von Issue 3](.img/protokoll_detailseite.png)
 
 ## Issue 4: Wird die Lehrkräfteübersicht geladen?
 - Tester: Alichan Schajchiev
@@ -26,7 +26,7 @@
   - Die erwartete URL erscheint mit einer Antwortlänge größer als null.
 - Ergebnis:
   - In der Console wird `lehrerinnen.html` mit einer Antwortlänge größer als 0 ausgegeben. Passt.
-!Konsolenausgabe von Issue 4: (.img/protokoll_Lehrerübersicht.png)
+[!Konsolenausgabe von Issue 4](.img/protokoll_Lehrerübersicht.png)
 ## Issue 6: Was passiert mit den Requests beim erneuten Besuch?
 - Tester: 
 - Durchführung:
